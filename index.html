@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NMA Store | The Red Market</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #E50914; /* Deep Red - Money Heist main color */
+      --primary-dark: #B80F0A; /* Darker Red */
+      --primary-light: #FADBD8; /* Very light pink/red for subtle accents */
+      --primary-subtle-light: rgba(250, 219, 216, 0.2); /* A more subtle light red for hover */
+      --dark: #1a1a1a;
+      --darker: #0c0c0c; /* Deeper background black */
+      --light-text: #f0f0f0; /* Off-white for general text */
+      --border-subtle: #333; /* Subtle border color */
+      --card-bg: #141414; /* Slightly lighter than darker for cards */
+      --white: #ffffff; /* Added white for hover effect */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--darker);
+      color: var(--light-text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Styles */
+    header {
+      background: rgba(26, 26, 26, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 0.8rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 2px solid var(--white);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+    }
+
+    .title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: var(--white);
+      letter-spacing: -0.5px;
+      white-space: nowrap;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .title-logo {
+      height: 1.5em; /* This makes the image size relative to the text size */
+      width: auto;
+      : white;
+      vertical-align: middle;
+    }
+
+    .title span {
+      color: var(--white);
+    }
+
+    /* Cart Button */
+    .cart-btn {
+      background: var(--primary);
+      color: var(--light-text);
+      border: 1px solid var(--primary-light);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      box-shadow: none;
+      padding: 0;
+      font-size: 1.2rem;
+    }
+
+    .cart-count {
+      background: var(--primary);
+      color: var(--light-text);
+      font-size: 0.8rem;
+      font-weight: 700;
+      border-radius: 50%;
+      padding: 3px;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      text-align: center;
+      line-height: 1;
+      border: 1px solid var(--white);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .cart-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: none;
+      border-color: var(--primary-subtle-light);
+    }
+
+    /* Premium Banner */
+    .premium-banner {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+      color: var(--light-text);
+      padding: 3.5rem 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      border-bottom: 2px solid var(--white);
+      box-shadow: inset 0 -3px 10px rgba(0,0,0,0.3);
+    }
+
+    .premium-content {
+      max-width: 800px;
+      margin: 0 auto;
+      z-index: 2;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; /* Aligns children to the left */
+    }
+
+    .premium-content h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      color: var(--light-text);
+      font-weight: 800;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      letter-spacing: 0.5px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .premium-content p {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0 0 1.5rem 0;
+      font-weight: 400;
+      text-align: left;
+      width: 100%;
+    }
+
+    .shop-now-btn {
+      background: var(--primary);
+      color: var(--light-text);
+      border: 1px solid var(--primary-light);
+      padding: 0.9rem 2.2rem;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1.05rem;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      box-shadow: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .shop-now-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: none;
+      border-color: var(--primary-subtle-light);
+    }
+
+    .premium-banner::before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 250px;
+      height: 250px;
+      background: rgba(229, 9, 20, 0.1);
+      border-radius: 50%;
+    }
+
+    .premium-banner::after {
+      content: "";
+      position: absolute;
+      bottom: -80px;
+      left: 100px;
+      width: 200px;
+      height: 200px;
+      background: rgba(229, 9, 20, 0.08);
+      border-radius: 50%;
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+      width: 100%;
+    }
+
+    .section-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: var(--light-text);
+      position: relative;
+      padding-bottom: 0.6rem;
+      text-align: left; /* Aligned to left */
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0; /* Aligned to left */
+      transform: translateX(0); /* Removed centering transform */
+      width: 60px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    /* Product Grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .product {
+      background: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+      transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid var(--white);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    }
+
+    .product-header {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+      padding: 1.5rem;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--white);
+      box-shadow: inset 0 -2px 5px rgba(0,0,0,0.2);
+    }
+
+    /* Pseudo-elements for bubbles/shapes in product-header, similar to premium-banner */
+    .product-header::before {
+      content: "";
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 100px;
+      height: 100px;
+      background: rgba(229, 9, 20, 0.1);
+      border-radius: 50%;
+    }
+
+    .product-header::after {
+      content: "";
+      position: absolute;
+      bottom: -40px;
+      left: 20px;
+      width: 80px;
+      height: 80px;
+      background: rgba(229, 9, 20, 0.08);
+      border-radius: 50%;
+    }
+
+    .product-icon {
+      width: 70px;
+      height: 70px;
+      background: var(--dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--light-text);
+      font-size: 1.8rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      border: 1px solid var(--white);
+      margin-right: 1.5rem;
+      z-index: 1;
+    }
+
+    .product-content {
+      padding: 1.8rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+      font-weight: 700;
+      text-align: left;
+      color: var(--light-text);
+      letter-spacing: 0.3px;
+    }
+
+    .product-description {
+      font-family: 'Inter', sans-serif;
+      color: #bbb;
+      margin-bottom: 1.2rem;
+      font-size: 0.95rem;
+      flex: 1;
+      text-align: left;
+      font-weight: 400;
+    }
+
+    .price {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .add-btn {
+      width: 100%;
+      background: var(--primary);
+      color: var(--light-text);
+      border: 1px solid var(--primary-light);
+      padding: 0.8rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      box-shadow: none;
+      font-size: 1rem;
+      text-transform: uppercase;
+    }
+
+    .add-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: none;
+      border-color: var(--primary-subtle-light);
+    }
+
+    /* Checkout Section - Modern Bill Style */
+    .checkout-box {
+      background: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+      padding: 2.5rem;
+      margin-top: 2.5rem;
+      border: 1px solid var(--white);
+    }
+
+    .checkout-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 1.8rem;
+    }
+
+    .checkout-header i {
+      font-size: 1.8rem;
+      color: var(--primary);
+    }
+
+    .checkout-header h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--light-text);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .summary-bill {
+        background: var(--dark);
+        padding: 1.8rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        font-family: 'Inter', sans-serif;
+        border: 1px solid var(--white);
+        color: var(--light-text);
+        font-size: 1rem;
+        line-height: 1.7;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .summary-item, .summary-subtotal, .summary-total {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+    }
+
+    .summary-item {
+        border-bottom: 1px dashed var(--white);
+    }
+    .summary-item:last-of-type {
+      border-bottom: none;
+      margin-bottom: 10px;
+    }
+
+    .summary-item span:first-child {
+        color: #bbb;
+        font-weight: 400;
+    }
+
+    .summary-item span:last-child {
+        color: var(--primary-light);
+        font-weight: 600;
+    }
+
+    .summary-subtotal {
+        border-top: 1px solid var(--white);
+        padding-top: 10px;
+        margin-top: 10px;
+        font-weight: 600;
+        color: var(--light-text);
+    }
+
+    .summary-total {
+        font-size: 1.15rem;
+        font-weight: 700;
+        border-top: 2px solid var(--primary);
+        padding-top: 12px;
+        margin-top: 8px;
+        color: var(--light-text);
+    }
+
+    .summary-total span:last-child {
+        color: var(--primary);
+        font-size: 1.25rem;
+    }
+
+    .empty-cart-message {
+      color: #888;
+      text-align: center;
+      padding: 1.5rem 0;
+      font-style: italic;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+    }
+
+    .whatsapp-btn {
+      background: var(--primary);
+      color: white;
+      border: 1px solid var(--primary-light);
+      padding: 1rem 1.8rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      box-shadow: none;
+      text-transform: uppercase;
+    }
+
+    .whatsapp-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: none;
+      border-color: var(--primary-subtle-light);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark);
+      color: var(--light-text);
+      padding: 2.5rem 2rem 1.5rem;
+      margin-top: auto;
+      border-top: 2px solid var(--white);
+      box-shadow: inset 0 3px 10px rgba(0,0,0,0.3);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .footer-section {
+      text-align: left;
+    }
+
+    .footer-section h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 1.2rem;
+      position: relative;
+      padding-bottom: 0.6rem;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      font-weight: 700;
+    }
+
+    .footer-section h4::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: var(--primary);
+    }
+
+    .footer-section p {
+        font-family: 'Inter', sans-serif;
+        text-align: left;
+        color: #aaa;
+        font-weight: 400;
+    }
+
+    .footer-links {
+      list-style: none;
+      margin-top: 1.2rem;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.7rem;
+    }
+
+    .footer-links a {
+      font-family: 'Inter', sans-serif;
+      color: #aaa;
+      text-decoration: none;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      font-weight: 400;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .whatsapp-contact {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary);
+      color: white;
+      border: 1px solid var(--primary-light);
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 1rem;
+      gap: 8px;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      box-shadow: none;
+    }
+
+    .whatsapp-contact:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: none;
+      border-color: var(--primary-subtle-light);
+    }
+
+    .copyright {
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      padding-top: 2rem;
+      margin-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: #888;
+      font-size: 0.85rem;
+      font-weight: 400;
+    }
+
+    /* Floating Action Button (FAB) for Music Player */
+    .music-fab {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 60px;
+      height: 60px;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.8rem;
+      color: var(--light-text);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      transition: background 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid var(--white);
+      z-index: 1000;
+    }
+
+    .music-fab:hover {
+      background: rgba(0, 0, 0, 0.8);
+      transform: translateY(-5px);
+    }
+
+    .music-fab i {
+      animation: pulse 2s infinite cubic-bezier(0.66, 0, 0.34, 1);
+    }
+
+    .music-fab.playing i {
+      animation: pulse 1.5s infinite cubic-bezier(0.66, 0, 0.34, 1);
+    }
+    .music-fab.paused i {
+      animation: none;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Overlay styles (Welcome Overlay - now cookie consent style) */
+    .overlay {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: var(--card-bg);
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      transform: translateY(0);
+      transition: transform 0.5s ease;
+      border-top: 3px solid var(--primary);
+    }
+
+    .overlay.hidden {
+      transform: translateY(100%);
+    }
+
+    .overlay-header {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+      padding: 0.8rem 2rem;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--light-text);
+      border-bottom: 1px solid var(--border-subtle);
+      box-shadow: inset 0 -2px 5px rgba(0,0,0,0.2);
+    }
+
+    .overlay-header i {
+        color: var(--primary);
+    }
+
+    .overlay-content {
+      padding: 2rem;
+      text-align: center;
+      max-width: 90%;
+      width: 100%;
+      color: var(--light-text);
+    }
+
+    .overlay-content h2 {
+      color: var(--primary);
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .overlay-content p {
+      color: var(--light-text);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.9;
+    }
+
+    .overlay-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .overlay-button {
+      background: var(--primary);
+      color: var(--light-text);
+      border: 1px solid var(--primary-light);
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      box-shadow: none;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .overlay-button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      border-color: var(--primary-subtle-light);
+    }
+
+    /* Alert Box Styles (Cookie consent style from bottom) */
+    .alert-box {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: var(--card-bg);
+        color: var(--light-text);
+        padding: 0;
+        box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        transform: translateY(100%);
+        transition: transform 0.4s ease-in-out;
+        border-top: 3px solid var(--primary);
+    }
+
+    .alert-box.show {
+        transform: translateY(0);
+    }
+
+    .alert-box-header {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+      padding: 0.8rem 2rem;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--light-text);
+      border-bottom: 1px solid var(--border-subtle);
+      box-shadow: inset 0 -2px 5px rgba(0,0,0,0.2);
+    }
+
+    .alert-box-header i {
+        color: var(--primary);
+    }
+
+    .alert-content-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        width: 100%;
+        max-width: 800px;
+        padding-top: 1.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .alert-content-wrapper p {
+        flex-grow: 1;
+        font-size: 1rem;
+        font-weight: 400;
+        text-align: center;
+        color: var(--light-text);
+    }
+
+    .alert-close-btn {
+        background: none;
+        border: none;
+        color: var(--light-text);
+        font-size: 1.8rem;
+        cursor: pointer;
+        padding: 0 5px;
+        transition: color 0.2s ease;
+    }
+
+    .alert-close-btn:hover {
+        color: var(--primary-light);
+    }
+
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      header {
+        padding: 0.8rem 1rem;
+      }
+
+      .title {
+        font-size: 1.6rem;
+      }
+
+      .premium-banner {
+        padding: 2.5rem 1rem;
+      }
+
+      .premium-content h2 {
+        font-size: 2.2rem;
+      }
+
+      .premium-content p {
+        font-size: 0.95rem;
+      }
+
+      .shop-now-btn {
+        padding: 0.8rem 1.8rem;
+        font-size: 0.95rem;
+      }
+
+      .section-title {
+        font-size: 1.6rem;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .cart-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+
+      .cart-count {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+        padding: 2px;
+        top: -6px;
+        right: -6px;
+      }
+
+      .checkout-box {
+        padding: 1.8rem;
+      }
+
+      .checkout-header h3 {
+        font-size: 1.4rem;
+      }
+
+      .summary-bill {
+        padding: 1.2rem;
+      }
+
+      .summary-item, .summary-subtotal, .summary-total {
+        font-size: 0.9rem;
+      }
+
+      .summary-total span:last-child {
+        font-size: 1.05rem;
+      }
+
+      .whatsapp-btn {
+        padding: 0.9rem 1.2rem;
+        font-size: 1rem;
+      }
+
+      .footer-section {
+        text-align: left;
+      }
+
+      .footer-section h4::after {
+        left: 0;
+        transform: translateX(0);
+      }
+
+      .footer-links a {
+        justify-content: flex-start;
+      }
+
+      .music-fab {
+        width: 50px;
+        height: 50px;
+        bottom: 15px;
+        right: 15px;
+        font-size: 1.5rem;
+      }
+
+      /* Responsive for welcome overlay */
+      .overlay-header {
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+      }
+      .overlay-content h2 {
+        font-size: 1.8rem;
+      }
+      .overlay-content p {
+        font-size: 0.95rem;
+      }
+      .overlay-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .overlay-button {
+        width: 100%;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.95rem;
+      }
+
+      /* Responsive for alert box */
+      .alert-box {
+        padding: 0;
+      }
+      .alert-box-header {
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+      }
+      .alert-content-wrapper {
+        flex-direction: column;
+        gap: 10px;
+        padding: 1rem;
+      }
+      .alert-close-btn {
+        margin-top: 10px;
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="alert-box" id="custom-alert">
+      <div class="alert-box-header">
+          <i class="fas fa-exclamation-triangle"></i> Alert Notification
+      </div>
+      <div class="alert-content-wrapper">
+          <p id="alert-message"></p>
+          <button class="alert-close-btn" onclick="hideAlert()">&times;</button>
+      </div>
+  </div>
+
+  <div class="overlay" id="welcome-overlay">
+    <div class="overlay-header">
+        <i class="fas fa-cookie-bite"></i> Cookie Consent
+    </div>
+    <div class="overlay-content">
+      <p align=left >This website uses cookies to ensure you get the best experience and to play some motivating music. Do you agree?</p>
+      <div class="overlay-buttons">
+        <button class="overlay-button" id="start-shopping-btn">Yes, proceed!</button>
+        <button class="overlay-button" id="no-music-btn">No, thanks.</button>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="title">
+    <img src="assets/img.png" alt="Icon" class="title-logo">
+        NMA <span>STORE</span>
+    </div>
+    <button class="cart-btn" onclick="checkoutWhatsApp()">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="cart-count" id="cart-item-count">0</span>
+    </button>
+  </header>
+
+  <section class="premium-banner">
+    <div class="premium-content">
+      <h2>Premium Digital Products</h2>
+      <p>Explore a curated selection of high-quality digital goods and subscriptions, designed for modern needs.</p>
+      <button class="shop-now-btn">
+        <i class="fas fa-gem"></i> Discover Products
+      </button>
+    </div>
+  </section>
+
+  <main>
+    <h2 class="section-title">Featured Products</h2>
+
+    <div class="products-grid">
+      <div class="product">
+        <div class="product-header">
+          <div class="product-icon">
+            <i class="fas fa-credit-card"></i>
+          </div>
+        </div>
+        <div class="product-content">
+          <h3>Universal Gift Card ($100)</h3>
+          <p class="product-description">A versatile gift card, accepted globally for a seamless online shopping experience.</p>
+          <div class="price">$95.00</div>
+          <button class="add-btn" onclick="addToCart('Universal Gift Card ($100)', 95)">
+            <i class="fas fa-plus"></i> Add to Cart
+          </button>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-header">
+          <div class="product-icon">
+            <i class="fas fa-tv"></i>
+          </div>
+        </div>
+        <div class="product-content">
+          <h3>Premium Streaming (1 Year)</h3>
+          <p class="product-description">Enjoy 12 months of high-definition, ad-free streaming on multiple devices.</p>
+          <div class="price">$129.99</div>
+          <button class="add-btn" onclick="addToCart('Premium Streaming (1 Year)', 129.99)">
+            <i class="fas fa-plus"></i> Add to Cart
+          </button>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-header">
+          <div class="product-icon">
+            <i class="fas fa-globe"></i>
+          </div>
+        </div>
+        <div class="product-content">
+          <h3>Secure VPN Access (2 Years)</h3>
+          <p class="product-description">Protect your privacy online with 24 months of encrypted, high-speed VPN access.</p>
+          <div class="price">$59.99</div>
+          <button class="add-btn" onclick="addToCart('Secure VPN Access (2 Years)', 59.99)">
+            <i class="fas fa-plus"></i> Add to Cart
+          </button>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-header">
+          <div class="product-icon">
+            <i class="fas fa-puzzle-piece"></i>
+          </div>
+        </div>
+        <div class="product-content">
+          <h3>Ultimate Gaming Pack</h3>
+          <p class="product-description">Unlock a curated selection of top-tier games across leading gaming platforms.</p>
+          <div class="price">$129.99</div>
+          <button class="add-btn" onclick="addToCart('Ultimate Gaming Pack', 129.99)">
+            <i class="fas fa-plus"></i> Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="checkout-box">
+      <div class="checkout-header">
+        <i class="fas fa-file-invoice"></i>
+        <h3>Order Summary</h3>
+      </div>
+      <div class="summary-bill" id="summary">
+        <div class="empty-cart-message">Your cart is empty.</div>
+      </div>
+      <button class="whatsapp-btn" onclick="checkoutWhatsApp()">
+        <i class="fab fa-whatsapp"></i> Checkout
+      </button>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>About NMA Store</h4>
+        <p>Your trusted online destination for premium digital products. Committed to quality and customer satisfaction.</p>
+        <a href="https://wa.me/919566272832" class="whatsapp-contact" target="_blank">
+          <i class="fab fa-whatsapp"></i> Chat with Us
+        </a>
+      </div>
+
+      <div class="footer-section">
+        <h4>Contact Information</h4>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-map-marker-alt"></i> Digital Hub, Level 10</a></li>
+          <li><a href="#"><i class="fas fa-envelope"></i> support@nmastore.com</a></li>
+          <li><a href="https://wa.me/919566272832" target="_blank"><i class="fab fa-whatsapp"></i> +91 95662 72832</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="copyright">
+      © 2025 NMA Store. All rights reserved.
+    </div>
+  </footer>
+
+  <div class="music-fab" id="music-fab">
+    <i class="fas fa-play"></i>
+  </div>
+
+  <audio id="bella-ciao-audio" src="/assets/music.mp3" loop></audio>
+
+  <script>
+    let cart = [];
+    const cartItemCount = document.getElementById('cart-item-count');
+    const musicFab = document.getElementById('music-fab');
+    const bellaCiaoAudio = document.getElementById('bella-ciao-audio');
+    const musicIcon = musicFab.querySelector('i');
+    const welcomeOverlay = document.getElementById('welcome-overlay');
+    const startShoppingBtn = document.getElementById('start-shopping-btn');
+    const noMusicBtn = document.getElementById('no-music-btn');
+
+    function updateSummary() {
+      const summaryDiv = document.getElementById('summary');
+      summaryDiv.innerHTML = '';
+
+      if (cart.length === 0) {
+        summaryDiv.innerHTML = '<div class="empty-cart-message">Your cart is empty.</div>';
+        cartItemCount.innerText = "0";
+        return;
+      }
+
+      let subtotal = 0;
+      cart.forEach(item => {
+        subtotal += item.price;
+        const itemLine = document.createElement('div');
+        itemLine.classList.add('summary-item');
+        itemLine.innerHTML = `<span>${item.name}</span><span>$${item.price.toFixed(2)}</span>`;
+        summaryDiv.appendChild(itemLine);
+      });
+      // Add Subtotal
+      const subtotalLine = document.createElement('div');
+      subtotalLine.classList.add('summary-subtotal');
+      subtotalLine.innerHTML = `<span>Subtotal:</span><span>$${subtotal.toFixed(2)}</span>`;
+      summaryDiv.appendChild(subtotalLine);
+      // Total
+      const total = subtotal;
+
+      const totalLine = document.createElement('div');
+      totalLine.classList.add('summary-total');
+      totalLine.innerHTML = `<span>TOTAL:</span><span>$${total.toFixed(2)}</span>`;
+      summaryDiv.appendChild(totalLine);
+
+      cartItemCount.innerText = cart.length;
+    }
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      updateSummary();
+    }
+
+    function showAlert(message) {
+        const alertBox = document.getElementById('custom-alert');
+        const alertMessage = document.getElementById('alert-message');
+        alertMessage.innerText = message;
+        alertBox.classList.add('show');
+    }
+
+    function hideAlert() {
+        const alertBox = document.getElementById('custom-alert');
+        alertBox.classList.remove('show');
+    }
+
+    function checkoutWhatsApp() {
+      if (cart.length === 0) {
+        showAlert("Your cart is empty. Add some products first.");
+        return;
+      }
+
+      let message = "NMA STORE ORDER:\n\n";
+      let total = 0;
+      cart.forEach(item => {
+        message += `- ${item.name} - $${item.price.toFixed(2)}\n`;
+        total += item.price;
+      });
+      message += `\n----------------------------\n`;
+      message += `Total: $${total.toFixed(2)}`;
+
+      const number = "919566272832";
+      const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank");
+    }
+
+    // Music Player Logic
+    musicFab.addEventListener('click', () => {
+      if (bellaCiaoAudio.paused) {
+        bellaCiaoAudio.play();
+        musicIcon.classList.remove('fa-play');
+        musicIcon.classList.add('fa-pause');
+        musicFab.classList.add('playing');
+        musicFab.classList.remove('paused');
+      } else {
+        bellaCiaoAudio.pause();
+        musicIcon.classList.remove('fa-pause');
+        musicIcon.classList.add('fa-play');
+        musicFab.classList.remove('playing');
+        musicFab.classList.add('paused');
+      }
+    });
+    // Welcome overlay and music start logic
+    startShoppingBtn.addEventListener('click', () => {
+      welcomeOverlay.classList.add('hidden');
+      const playPromise = bellaCiaoAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          musicIcon.classList.remove('fa-play');
+          musicIcon.classList.add('fa-pause');
+          musicFab.classList.add('playing');
+          musicFab.classList.remove('paused');
+        }).catch(error => {
+          console.warn("Music autoplay prevented:", error);
+          musicIcon.classList.remove('fa-pause');
+          musicIcon.classList.add('fa-play');
+          musicFab.classList.remove('playing');
+          musicFab.classList.add('paused');
+        });
+      }
+    });
+
+    // "No, thanks" button to hide overlay and pause music
+    noMusicBtn.addEventListener('click', () => {
+      welcomeOverlay.classList.add('hidden');
+      if (!bellaCiaoAudio.paused) { // Check if audio is NOT paused, i.e., currently playing
+        bellaCiaoAudio.pause();
+        musicIcon.classList.remove('fa-pause');
+        musicIcon.classList.add('fa-play');
+        musicFab.classList.remove('playing');
+        musicFab.classList.add('paused');
+      }
+    });
+    // Initialize the summary when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      updateSummary();
+    });
+  </script>
+</body>
+</html>
